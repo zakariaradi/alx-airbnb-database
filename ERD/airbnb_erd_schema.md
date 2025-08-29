@@ -1,10 +1,10 @@
 ### Entity Details
-<img width="1536" height="1024" alt="Diagrama de Relacionamentos de Entidade" src="https://github.com/user-attachments/assets/565bc6b0-aaed-498a-9fba-6a85a3f695ad" />
+
+<img width="992" height="721" alt="airbnb_ERD drawio" src="https://github.com/user-attachments/assets/ce753a68-31bf-41a2-94b7-da9ff288d964" />
 
 **User**
 - PK: user_id  
-- Attributes: first_name, last_name, email, password_hash, phone_number, role, created_at  
-
+- Attributes: first_name, last_name, email, password_hash, phone_number, role, created_at 
 **Property**
 - PK: property_id  
 - FK: host_id → User(user_id)  
