@@ -1,4 +1,5 @@
 ### Entity Details
+<img width="1536" height="1024" alt="Diagrama de Relacionamentos de Entidade" src="https://github.com/user-attachments/assets/565bc6b0-aaed-498a-9fba-6a85a3f695ad" />
 
 **User**
 - PK: user_id  
