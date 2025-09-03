@@ -30,3 +30,54 @@ This document analyzes the performance impact of adding indexes to the Airbnb da
 **Query**: 
 ```sql
 SELECT * FROM users WHERE email = 'user@example.com';
+
+-----
+
+# Query Performance Measurement with EXPLAIN and ANALYZE
+
+This document provides a methodology for measuring query performance before and after index implementation using PostgreSQL's EXPLAIN and ANALYZE commands.
+
+## Understanding EXPLAIN and ANALYZE
+
+### EXPLAIN
+The EXPLAIN command shows the execution plan that the PostgreSQL planner generates for a given SQL statement. It reveals:
+- The scan method (sequential scan, index scan, etc.)
+- Join algorithms
+- Estimated costs and row counts
+- Operation order
+
+### EXPLAIN ANALYZE
+The EXPLAIN ANALYZE command actually executes the query and provides:
+- Actual execution time
+- Actual row counts
+- Comparison between estimates and actual values
+- Buffer usage statistics
+
+## Performance Measurement Methodology
+
+### 1. Identify Key Queries
+Identify the most frequently executed and performance-critical queries in your application.
+
+### 2. Establish Baseline Performance
+Run EXPLAIN ANALYZE on each query before creating indexes to establish a baseline.
+
+### 3. Create Appropriate Indexes
+Based on the query patterns and WHERE clause conditions, create targeted indexes.
+
+### 4. Measure Performance Improvement
+Run EXPLAIN ANALYZE again after index creation to measure improvement.
+
+### 5. Document Results
+Record the before and after performance metrics for comparison.
+
+## Example Queries for Testing
+
+### Test Query 1: User Authentication
+```sql
+-- Before indexing
+EXPLAIN ANALYZE 
+SELECT * FROM users WHERE email = 'user@example.com';
+
+-- After creating index on users(email)
+EXPLAIN ANALYZE 
+SELECT * FROM users WHERE email = 'user@example.com';
