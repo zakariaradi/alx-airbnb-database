@@ -30,3 +30,53 @@ CREATE INDEX idx_reviews_created_at ON reviews(created_at);
 CREATE INDEX idx_properties_city_price ON properties(city, price);
 CREATE INDEX idx_bookings_user_status ON bookings(user_id, status);
 CREATE INDEX idx_bookings_property_dates ON bookings(property_id, check_in_date, check_out_date);
+
+---------
+-Test Query 2: Property Search by Location
+-- Before indexing
+EXPLAIN ANALYZE
+SELECT * FROM properties 
+WHERE city = 'San Francisco' AND country = 'USA';
+
+-- After creating index on properties(city, country)
+EXPLAIN ANALYZE
+SELECT * FROM properties 
+WHERE city = 'San Francisco' AND country = 'USA';
+
+-Test Query 3: Date Range Bookings Query
+-- Before indexing
+EXPLAIN ANALYZE
+SELECT * FROM bookings 
+WHERE check_in_date BETWEEN '2023-01-01' AND '2023-12-31'
+AND status = 'confirmed';
+
+-- After creating index on bookings(check_in_date, status)
+EXPLAIN ANALYZE
+SELECT * FROM bookings 
+WHERE check_in_date BETWEEN '2023-01-01' AND '2023-12-31'
+AND status = 'confirmed';
+
+-Test Query 4: Join Query with Filtering
+-- Before indexing
+EXPLAIN ANALYZE
+SELECT u.first_name, u.last_name, p.title, b.check_in_date, b.check_out_date
+FROM bookings b
+JOIN users u ON b.user_id = u.user_id
+JOIN properties p ON b.property_id = p.property_id
+WHERE u.country = 'USA' AND b.status = 'completed'
+ORDER BY b.check_in_date DESC
+LIMIT 100;
+
+-- After creating indexes on:
+-- bookings(user_id, property_id, status)
+-- users(user_id, country)
+-- properties(property_id)
+EXPLAIN ANALYZE
+SELECT u.first_name, u.last_name, p.title, b.check_in_date, b.check_out_date
+FROM bookings b
+JOIN users u ON b.user_id = u.user_id
+JOIN properties p ON b.property_id = p.property_id
+WHERE u.country = 'USA' AND b.status = 'completed'
+ORDER BY b.check_in_date DESC
+LIMIT 100;
+
